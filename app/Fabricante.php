@@ -14,7 +14,7 @@ class Fabricante extends Model {
 
 	// Ocultamos los campos de timestamps en las consultas.
 
-	protected $hidden=['create_at','updated_at'];
+	protected $hidden=['created_at','updated_at'];
 
 	// Relacion de Fabricante con Aviones;
 	public function aviones(){
