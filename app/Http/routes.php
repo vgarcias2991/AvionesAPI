@@ -10,7 +10,7 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-
+/*
 Route::get('/', 'WelcomeController@index');
 
 Route::get('home', 'HomeController@index');
@@ -19,3 +19,10 @@ Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
 ]);
+*/
+// Creamos las rutas nuevas que tendran en cuenta 
+// los controllers programados en Controllers.
+Route::resource('fabricantes','FabricanteController');
+
+
+Route::resource('aviones','AvionController');
