@@ -127,7 +127,25 @@ class FabricanteController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+		//Comprobamos si existe el registro indicado
+		$fabricante = Fabricante::find($id);
+
+		if(!$fabricante){
+			// Se devuelve un array errors con los errores detectados y codigo 404
+			return response()->json([
+				'errors'=>Array(['code'=>404,'mensaje'=>'No se encuentra un fabricante con ese codigo.'])
+			],404);
+		}
+
+		//Borramos el fabricante y devolvemos el codigo 204.
+		// 204 significa "No Content".
+		// Este codigo no muestra texto en el body.
+		// Si quisieramos ver el mensaje devolveriamos
+		// un 200.
+		$fabricante->delete();
+
+		// Devolvemos la informacion encontrada.
+		return response()->json(['code'=>204,'message'=>'Se ha eliminado correctamente el fabricante'],204);
 	}
 
 }
