@@ -103,11 +103,12 @@ class FabricanteController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
+	/*
 	public function edit($id)
 	{
 		//
 	}
-
+	*/
 	/**
 	 * Update the specified resource in storage.
 	 *
