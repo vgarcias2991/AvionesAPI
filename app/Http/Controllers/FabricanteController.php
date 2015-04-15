@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 // Cargamos Fabricante por que lo usamos mas abajo.
 use App\Fabricante;
-
+use Response;
 class FabricanteController extends Controller {
 
 	/**
@@ -48,9 +48,24 @@ class FabricanteController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store(Request $request)
 	{
-		//
+		// Metodo llamado al hacer un POST.
+		// Comprobamos que recibimos todos los campos.
+		if(!$request->input('nombre') || !$request->input('direccion')||!$request->input('telefono')){
+
+			//NO estamos recibiendo los campos necesarios. Devolvemos error.
+			return response()->json(['errors'=>Array(['code'=>422,'message'=>'Faltan datos necesarios para procesar el alta.'])],422);
+		}
+		// Insertamos los datos recibidos en la tabla.
+		$nuevoFabricante = Fabricante::create($request->all());
+
+		//Devolvemos la respuesta Http 201 (Created) + los datos del nuevo fabricante + una cabecera de Location
+
+		$respuesta = Response::make(json_encode(['data'=>$nuevoFabricante]),201)->header('Location','http://www.dominio.local/fabricantes/'.$nuevoFabricante->id)->header('Content-Type','application/json');
+
+		return $respuesta;
+
 	}
 
 	/**
