@@ -25,8 +25,11 @@ Route::controllers([
 // Ruta /fabricantes/....
 Route::resource('fabricantes','FabricanteController',['except'=>['create']]);
 
-// Ruta /aviones/......
-Route::resource('aviones','AvionController');
+// Recurso aninado /fabricantes/xx/aviones
+Route::resource('fabricantes.aviones','FabricanteAvionController',['except'=>['edit','create','show']]);
+
+// Ruta /aviones/......El resto de metodos los gestiona FabricanteAvion
+Route::resource('aviones','AvionController',['only'=>['index','show']]);
 
 // Ruta por defecto /
 Route::get('/', function(){

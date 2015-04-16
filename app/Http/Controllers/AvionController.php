@@ -4,7 +4,9 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use App\Avion;
 
+use Response;
 class AvionController extends Controller {
 
 	/**
@@ -15,6 +17,11 @@ class AvionController extends Controller {
 	public function index()
 	{
 		//
+		return response()->json([
+
+				'status'=>'ok',
+				'data' => Avion::all()
+			],200);
 	}
 
 	/**
@@ -46,6 +53,17 @@ class AvionController extends Controller {
 	public function show($id)
 	{
 		//
+		$avion = Avion::find($id);
+
+		if(!$avion){
+			// Se devuelve un array errors con los errores detectados y codigo 404
+			return response()->json([
+				'errors'=>Array(['code'=>404,'mensaje'=>'No se encuentra un fabricante con ese codigo.'])
+			],404);
+		}
+
+		// Devolvemos la informacion encontrada.
+		return response()->json(['status'=>'ok','data'=>$avion],200);
 	}
 
 	/**
