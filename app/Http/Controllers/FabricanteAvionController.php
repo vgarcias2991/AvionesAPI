@@ -88,9 +88,31 @@ class FabricanteAvionController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy($idFabricante,$idAvion)
 	{
 		//
+		$fabricante=Fabricante::find($idFabricante);
+
+		if(!$fabricante){
+			// Se devuelve un array errors con los errores detectados y codigo 404
+			return response()->json([
+				'errors'=>Array(['code'=>404,'mensaje'=>'No se encuentra un fabricante con ese codigo.'])
+			],404);
+		}
+		$avion = $fabricante->aviones()->find($idAvion);
+
+		if(!$avion){
+			// Se devuelve un array errors con los errores detectados y codigo 404
+			return response()->json([
+				'errors'=>Array(['code'=>404,'mensaje'=>'No se encuentra un avion de ese fabricante'])
+			],404);
+		}
+		// Borramos el avion.
+		$avion->delete();
+
+		//Devolvemos codigo 204 No Content.
+
+		return response()->json(['code'=>204,'message'=>'Se ha eliminado correctamente el avion.'],204);
 	}
 
 }
