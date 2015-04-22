@@ -4,9 +4,9 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use App\Avion;
 
-use Response;
 class AvionController extends Controller {
 
 	/**
@@ -16,33 +16,21 @@ class AvionController extends Controller {
 	 */
 	public function index()
 	{
-		//
-		return response()->json([
+		$aviones=Cache::remember('cacheaviones',15/60,function(){
 
-				'status'=>'ok',
-				'data' => Avion::all()
-			],200);
+			return Avion::all();
+
+		});
+
+		// Devuelve la lista de todos los aviones sin cache.
+		//return response()->json(['status'=>'ok','data'=>Avion::all()],200);
+		
+		// Devuelve la lista de todos los aviones CON cache.
+		return response()->json(['status'=>'ok','data'=>$aviones],200);
+
+
 	}
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
-	}
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
-	}
 
 	/**
 	 * Display the specified resource.
@@ -52,51 +40,15 @@ class AvionController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
-		$avion = Avion::find($id);
+		// Buscamos ese avion y si lo encuentra muestra la info.
+		$avion=Avion::find($id);
 
-		if(!$avion){
-			// Se devuelve un array errors con los errores detectados y codigo 404
-			return response()->json([
-				'errors'=>Array(['code'=>404,'mensaje'=>'No se encuentra un fabricante con ese codigo.'])
-			],404);
+		if (!$avion)
+		{
+			return response()->json(['errors'=>['code'=>404,'message'=>'No se encuentra un avion con ese código']],404);
 		}
 
-		// Devolvemos la informacion encontrada.
 		return response()->json(['status'=>'ok','data'=>$avion],200);
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
 	}
 
 }
