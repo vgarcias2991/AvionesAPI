@@ -12,6 +12,11 @@ use Response;
 
 class FabricanteAvionController extends Controller {
 
+
+	public function __construct(){
+
+		$this->middleware('auth.basic',['only'=>['store','update','destroy']]);
+	}
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -28,13 +33,15 @@ class FabricanteAvionController extends Controller {
 			// En code podríamos indicar un código de error personalizado de nuestra aplicación si lo deseamos.
 			return response()->json(['errors'=>array(['code'=>404,'message'=>'No se encuentra un fabricante con ese código.'])],404);
 		}
+		
 		$listaAviones = Cache::remember('cacheListaAviones',15/60,function(){
 
 			return $fabricante->aviones()->get();
+			//return Fabricante::find($idFabricante)->aviones()->get();
 
 		});
-		return response()->json(['status'=>'ok','data'=>$listaAviones],200);
-		// return response()->json(['status'=>'ok','data'=>$fabricante->aviones],200);
+		//return response()->json(['status'=>'ok','data'=>$listaAviones],200);
+		 return response()->json(['status'=>'ok','data'=>$listaAviones],200);
 	}
 
 
